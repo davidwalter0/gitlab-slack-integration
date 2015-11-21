@@ -16,8 +16,9 @@ emacs function
                 $(git log --format='%D' -n1|cut -f 3 -d' '|sed -e 's/,//g')")
       (shell-command-to-string
           "git log --format='%s' -n1")))
+    (insert-string (shell-command-to-string "git commit -a -m \"test commit at $(date +%Y.%m.%d.%H.%M.%S.%:::z)\""))
   (save-buffer)
-  (insert-string (shell-command-to-string "git commit -a -m \"test commit at $(date +%Y.%m.%d.%H.%M.%S.%:::z)\"; git push"))))
+  (insert-string (shell-command-to-string "git push"))))
 
 (git-stamp)
 ```
@@ -26,6 +27,10 @@ emacs function
 2015-11-21 12:45:57 -0500 master
 test commit at 2015.11.21.12.45.57.-05
 
+[master 501ec12] test commit at 2015.11.21.12.46.39.-05
+ 1 file changed, 9 insertions(+)
+To git@k8s-node-01:davidwalter0/falcon-token-test.git
+   688c559..501ec12  master -> master
 
 
 2015-11-21 12:45:41 -0500 master
