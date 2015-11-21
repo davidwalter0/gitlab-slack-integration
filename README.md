@@ -2,6 +2,7 @@
 ```
 (git-stamp)
 
+
 2015-11-21 13:23:02-0500 master Commit performed by git-stamp at 2015.11.21.13.23.02.-05 
 
 ```
@@ -44,7 +45,7 @@ emacs function
   (save-excursion
   (next-line 2)
   (insert-string 
-    (format "\n%s %s"
+    (format "\n%s %s\n"
       (shell-command-to-string
           "printf '%s %s' $(git log --format='%ci' -n1) \
                 $(git log --format='%D' -n1|cut -f 3 -d' '|sed -e 's/,//g')")
