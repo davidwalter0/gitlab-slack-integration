@@ -1,14 +1,10 @@
 ### Text
 ```
 (git-stamp)
+
+
+
 ```
-
-
-2015-11-21 13:00:29 -0500 master
-test commit at 2015.11.21.13.00.29.-05
-
-[master 7aeb381] test commit at 2015.11.21.13.18.15.-05
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
 *Configure gitlab channel*
 ```
@@ -53,7 +49,7 @@ emacs function
                 $(git log --format='%D' -n1|cut -f 3 -d' '|sed -e 's/,//g')")
       (shell-command-to-string
           "git log --format='%s' -n1")))
-    (insert-string (shell-command-to-string "git commit -a -m \"test commit at $(date +%Y.%m.%d.%H.%M.%S.%:::z)\""))
+    (shell-command-to-string "git commit -a -m \"test commit at $(date +%Y.%m.%d.%H.%M.%S.%:::z)\"")
   (shell-command-to-string "git push")
   (save-buffer)))
 
