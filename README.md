@@ -9,7 +9,7 @@ emacs function
   (interactive)
   (save-excursion
   (next-line 2)
-  (save-current-buffer)
+  (save-buffer)
   (insert-string 
     (format "\n\n%s%s\n"
       (shell-command-to-string
@@ -21,6 +21,51 @@ emacs function
 
 (git-stamp)
 ```
+
+
+2015-11-21 12:37:16 -0500 master
+test commit at 2015.11.21.12.37.16.-05
+
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Untracked files:
+	.#README.md
+
+nothing added to commit but untracked files present
+Everything up-to-date
+
+
+2015-11-21 12:37:16 -0500 master
+test commit at 2015.11.21.12.37.16.-05
+
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Untracked files:
+	.#README.md
+
+nothing added to commit but untracked files present
+Everything up-to-date
+
+
+2015-11-21 12:37:16 -0500 master
+test commit at 2015.11.21.12.37.16.-05
+
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Untracked files:
+	.#README.md
+
+nothing added to commit but untracked files present
+Everything up-to-date
+
+
+2015-11-21 12:35:24 -0500 master
+test commit at 2015.11.21.12.35.24.-05
+
+[master 2841a67] test commit at 2015.11.21.12.37.16.-05
+ 1 file changed, 15 insertions(+)
+To git@k8s-node-01:davidwalter0/falcon-token-test.git
+   1ceaf85..2841a67  master -> master
 
 
 2015-11-21 12:29:03 -0500 master
