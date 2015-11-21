@@ -3,6 +3,9 @@
 (git-stamp)
 
 
+2015-11-21 13:27:45-0500 master Commit performed by git-stamp at 2015.11.21.13.27.45.-05 
+
+
 2015-11-21 13:23:02-0500 master Commit performed by git-stamp at 2015.11.21.13.23.02.-05 
 
 ```
@@ -45,13 +48,13 @@ emacs function
   (save-excursion
   (next-line 2)
   (insert-string 
-    (format "\n%s %s\n"
+    (format "\nPrior commit: %s %s\n"
       (shell-command-to-string
           "printf '%s %s' $(git log --format='%ci' -n1) \
                 $(git log --format='%D' -n1|cut -f 3 -d' '|sed -e 's/,//g')")
       (shell-command-to-string
           "git log --format='%s %N' -n1|head -1")))
-    (shell-command-to-string "git commit -a -m \"Commit performed by git-stamp at $(date +%Y.%m.%d.%H.%M.%S.%:::z)\"")
+  (shell-command-to-string "git commit -a -m \"Commit performed by git-stamp at $(date +%Y.%m.%d.%H.%M.%S.%:::z)\"")
   (shell-command-to-string "git push")
   (save-buffer)))
 
