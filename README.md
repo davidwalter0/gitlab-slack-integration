@@ -1,4 +1,35 @@
 ### Text
+```
+(git-stamp)
+```
+
+
+
+Configure gitlab channel
+```
+* create a channel for message
+  channels + channel name
+
+  #gitlab
+
+* go to slack projectname.slack.com/services/
+  integrations
+  [Incoming WebHooks]
+  Choose a channel
+     #gitlab 
+
+  generate or copy the [Webhook URL]
+
+* go to gitlab url  -- http://host/username/projectname/services/slack/edit
+
+  Add the [Webhook URL] to the webhook and select the events.
+  Save
+  [Test Settings]
+
+
+```
+
+
 Shell command
 ```
 git commit -a -m "test commit at $(date +%Y.%m.%d.%H.%M.%S.%:::z)"; git push
@@ -20,8 +51,16 @@ emacs function
   (save-buffer)
   (insert-string (shell-command-to-string "git push"))))
 
-(git-stamp)
 ```
+
+
+2015-11-21 12:46:39 -0500 master
+test commit at 2015.11.21.12.46.39.-05
+
+[master 52ced47] test commit at 2015.11.21.12.47.31.-05
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+To git@k8s-node-01:davidwalter0/falcon-token-test.git
+   501ec12..52ced47  master -> master
 
 
 2015-11-21 12:45:57 -0500 master
