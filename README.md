@@ -3,10 +3,8 @@
 (git-stamp)
 
 
-2015-11-21 13:27:45-0500 master Commit performed by git-stamp at 2015.11.21.13.27.45.-05 
 
-
-2015-11-21 13:23:02-0500 master Commit performed by git-stamp at 2015.11.21.13.23.02.-05 
+Prior commit: 2015-11-21 13:28:24-0500 master Commit performed by git-stamp at 2015.11.21.13.28.24.-05 
 
 ```
 
