@@ -15,7 +15,8 @@ emacs function
           "echo $(git log --format='%ci' -n1) \
                 $(git log --format='%D' -n1|cut -f 3 -d' '|sed -e 's/,//g')")
       (shell-command-to-string
-          "git log --format='%s' -n1")))))
+          "git log --format='%s' -n1")))
+  (insert-string (shell-command-to-string "git commit -a -m \"test commit at $(date +%Y.%m.%d.%H.%M.%S.%:::z)\"; git push"))))
 
 (git-stamp)
 ```
