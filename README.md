@@ -9,6 +9,7 @@ emacs function
   (interactive)
   (save-excursion
   (next-line 2)
+  (save-current-buffer)
   (insert-string 
     (format "\n\n%s%s\n"
       (shell-command-to-string
@@ -20,6 +21,20 @@ emacs function
 
 (git-stamp)
 ```
+
+
+2015-11-21 12:29:03 -0500 master
+test commit at 2015.11.21.12.29.03.-05
+
+[master 1ceaf85] test commit at 2015.11.21.12.35.24.-05
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+To git@k8s-node-01:davidwalter0/falcon-token-test.git
+   fae92bd..1ceaf85  master -> master
+
+
+2015-11-21 12:29:03 -0500 master
+test commit at 2015.11.21.12.29.03.-05
+
 
 
 2015-11-21 12:26:33 -0500 master
