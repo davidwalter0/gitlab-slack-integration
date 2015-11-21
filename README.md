@@ -47,7 +47,7 @@ emacs function
       (shell-command-to-string
           "git log --format='%s' -n1")))
     (insert-string (shell-command-to-string "git commit -a -m \"test commit at $(date +%Y.%m.%d.%H.%M.%S.%:::z)\""))
-  (save-buffer)
-  (insert-string (shell-command-to-string "git push"))))
+  (shell-command-to-string "git push")
+  (save-buffer)))
 
 ```
