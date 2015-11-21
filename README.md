@@ -3,6 +3,11 @@
 (git-stamp)
 
 
+
+
+2015-11-21 13:21:05 -0500 master
+test commit at 2015.11.21.13.21.05.-05 
+
 ```
 
 *Configure gitlab channel*
@@ -42,13 +47,12 @@ emacs function
   (save-excursion
   (next-line 2)
   (insert-string 
-    (format "\n\n%s%s\n"
+    (format "\n%s %s"
       (shell-command-to-string
-          "echo $(git log --format='%ci' -n1) \
+          "printf '%s %s' $(git log --format='%ci' -n1) \
                 $(git log --format='%D' -n1|cut -f 3 -d' '|sed -e 's/,//g')")
       (shell-command-to-string
-          "git log --format='%s %N' -n1"))
-)
+          "git log --format='%s %N' -n1|head -1")))
     (shell-command-to-string "git commit -a -m \"Commit performed by git-stamp at $(date +%Y.%m.%d.%H.%M.%S.%:::z)\"")
   (shell-command-to-string "git push")
   (save-buffer)))
