@@ -2,13 +2,10 @@
 ```
 (git-stamp)
 
-
-
-
-2015-11-21 13:21:05 -0500 master
-test commit at 2015.11.21.13.21.05.-05 
+2015-11-21 13:23:02-0500 master Commit performed by git-stamp at 2015.11.21.13.23.02.-05 
 
 ```
+
 
 *Configure gitlab channel*
 ```
