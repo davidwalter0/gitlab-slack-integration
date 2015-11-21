@@ -3,6 +3,13 @@
 (git-stamp)
 ```
 
+
+2015-11-21 13:00:29 -0500 master
+test commit at 2015.11.21.13.00.29.-05
+
+[master 7aeb381] test commit at 2015.11.21.13.18.15.-05
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
 *Configure gitlab channel*
 ```
 * create a channel for message
