@@ -3,23 +3,34 @@
 (git-stamp)
 
 
+Prior commit: 59e1cd4 2015-11-21 13:30:02 -0500 master origin/master Commit performed by git-stamp at 2015.11.21.13.30.02.-05 
+
+
 ```
 
 
-*Configure gitlab channel*
+*Configure gitlab channel monitor gitlab+slack*
 ```
-* create a channel for message
-  channels + channel name
+* Slack:
+* create a channel for message in slack
+  Channels [+] channel name
 
-  #gitlab
+  e.g.
 
-* go to slack projectname.slack.com/services/
-  integrations
+    #gitlab
+
+* go to slack's Integrations projectname.slack.com/services/
+  [user pulldown menu v] or Manage Your Team.
+
+  [Integrations]
+
   [Incoming WebHooks]
+
   Choose a channel
      #gitlab 
 
-  generate or copy the [Webhook URL]
+  generate or copy the [Webhook URL] add text describing the hook,
+  like gitlab monitors
 
 * go to gitlab url  -- http://host/username/projectname/services/slack/edit
 
