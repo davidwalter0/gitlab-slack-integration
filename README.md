@@ -2,10 +2,8 @@
 ```
 (git-stamp)
 
-Prior commit: d566b70 2015-11-21 20:17:51 -0500 master  adding gitlab test case 
 
-Prior commit: 388e84a 2015-11-21 20:19:44 -0500 master github/master Commit performed by git-stamp at 2015.11.21.20.19.44.-05:00:00 
-
+Prior commit: b603757 2015-11-21 23:51:18 -0500 master github/master cleanup, remove comments 
 
 ```
 

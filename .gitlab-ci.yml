@@ -1,20 +1,22 @@
 build-info:
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
-    - touch yaml
-    - echo attachments:                                                                                                                                              >> yaml
-    - echo - color: "#D00000"                                                                                                                                        >> yaml
-    - echo   fallback: |                                                                                                                                             >> yaml
-    - echo     New open task [Build completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments>  >> yaml
-    - echo   fields:                                                                                                                                                 >> yaml
-    - echo     - short: false                                                                                                                                        >> yaml
-    - echo       title: Notes                                                                                                                                        >> yaml
-    - echo       value: |                                                                                                                                            >> yaml
-    - echo         build text simulation                                                                                                                             >> yaml
-    - echo   pretext: |                                                                                                                                              >> yaml
-    - echo     New open task [Build Completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments>  >> yaml
-    - yaml2json --compress < yaml > json
-    - curl https://hooks.slack.com/services/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 -d@json
+    - |
+      cat > yaml <<EOF
+      attachments:                                                                                                                                             
+      - color: "#D00000"                                                                                                                                       
+        fallback: |                                                                                                                                            
+          New open task [Build completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments> 
+        fields:                                                                                                                                                
+          - short: false                                                                                                                                       
+            title: Notes                                                                                                                                       
+            value: |                                                                                                                                           
+              build text simulation                                                                                                                            
+        pretext: |                                                                                                                                             
+          New open task [Build Completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments> 
+      EOF
+      yaml2json --compress < yaml > json
+      curl https://hooks.slack.com/services/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 -d@json
   only:
     - master
   tags:
