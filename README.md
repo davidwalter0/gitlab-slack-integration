@@ -2,13 +2,7 @@
 ```
 (git-stamp)
 
-modified git-stamp, removed prior commit insert by git-stamp at /bin/bash: 2015.11.22.12.26.31.-05:00:00: command not found
-
-modified git-stamp 0704b5f 2015-11-22 11:50:20 -0500 master  add some thoughts on todo items 
-
-
-
-0704b5f 2015-11-22 11:50:20 -0500 master  add some thoughts on todo items 
+modified git-stamp, removed prior commit insert, correct indirect date call by git-stamp at 2015.11.22.12.27.06.-05:00:00
 
 ```
 
@@ -89,7 +83,7 @@ emacs function
       (insert-string 
          (format "%s by git-stamp at %s" 
            git-comment
-           (shell-command-to-string "$(date +%Y.%m.%d.%H.%M.%S.%::z)")))
+           (shell-command-to-string "date +%Y.%m.%d.%H.%M.%S.%::z")))
       (save-buffer)
       (shell-command-to-string (format "git commit -a -m \"%s by git-stamp at %s\"" 
            git-comment
