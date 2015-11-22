@@ -1,6 +1,7 @@
 build-info:
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
+    - ls -al 
     - echo ./slack-status build-info "${?}"
     - ./slack-status build-info "${?}"
   only:
