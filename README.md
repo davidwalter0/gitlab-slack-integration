@@ -1,8 +1,8 @@
 ### Text
 ```
 (git-stamp)
-
-git-stamp: 2015.11.22T.12.51.50.-05:00:00 at add mirror action to copy .slackurl to /tmp/${repo}-slack-urlgit-stamp: 2015.11.22T.12.45.37.-05:00:00 at slackurl debugging
+git-stamp: 2015.11.22T.12.52.03.-05:00:00 at add mirror action to copy .slackurl to /tmp/${repo}-slack-url
+git-stamp: 2015.11.22T.12.45.37.-05:00:00 at slackurl debugging
 ```
 
 
