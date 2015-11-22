@@ -4,6 +4,9 @@
 
 Prior commit: d566b70 2015-11-21 20:17:51 -0500 master  adding gitlab test case 
 
+Prior commit: 388e84a 2015-11-21 20:19:44 -0500 master github/master Commit performed by git-stamp at 2015.11.21.20.19.44.-05:00:00 
+
+
 ```
 
 
@@ -108,3 +111,20 @@ function monitor
 monitor
 
 ```
+
+---
+### configure the gitlab runner instances to auto register
+
+extract the settings -- http://host/ci/admin/runners : get the token
+from the admin page and use this token to register that will allow
+auto registration across projects [ shared runners ], rather than
+using the per project runners
+
+On the project page.
+
+
+TODO: extract and enable shared runners ]]
+
+http://host/user/project/runners
+
+
