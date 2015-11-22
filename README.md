@@ -2,14 +2,7 @@
 ```
 (git-stamp)
 
-
 Prior commit: d566b70 2015-11-21 20:17:51 -0500 master  adding gitlab test case 
-
-Prior commit: 59e1cd4 2015-11-21 13:30:02 -0500 master origin/master Commit performed by git-stamp at 2015.11.21.13.30.02.-05 
-
-Prior commit: 1a98d5b 2015-11-21 13:33:11 -0500 master origin/master Commit performed by git-stamp at 2015.11.21.13.33.11.-05:00:00 
-
-
 
 ```
 
@@ -38,6 +31,8 @@ Prior commit: 1a98d5b 2015-11-21 13:33:11 -0500 master origin/master Commit perf
   like gitlab monitors
 
 * go to gitlab url  -- http://host/username/projectname/services/slack/edit
+
+  or for global option settings -- http://host/admin/application_settings/services
 
   Add the [Webhook URL] to the webhook and select the events.
   User Name seems arbitrary. Maybe use GitlabWebhook
