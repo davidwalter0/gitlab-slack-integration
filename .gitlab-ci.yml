@@ -1,7 +1,8 @@
 build-info:
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
-    - ./slack-status build-info ${?}
+    - echo ./slack-status build-info "${?}"
+    - ./slack-status build-info "${?}"
   only:
     - master
   tags:
