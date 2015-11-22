@@ -3,14 +3,6 @@
 (git-stamp)
 
 
-Prior commit: e948429 2015-11-22 00:11:58 -0500 master github/master . 
-
-
-Prior commit: d5c1a10 2015-11-21 23:53:34 -0500 master github/master Commit performed by git-stamp at 2015.11.21.23.53.34.-05:00:00 
-
-
-Prior commit: b603757 2015-11-21 23:51:18 -0500 master github/master cleanup, remove comments 
-
 ```
 
 

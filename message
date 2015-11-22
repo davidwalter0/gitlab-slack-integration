@@ -2,15 +2,16 @@
 yaml2json --compress > json <<EOF
 attachments:                                                                                                                                             
 - color: "#D00000"
+  user: GitlabWebhook
   fallback: |
-    <http://gitlab-slack-integration/builds|builds>
+    <http://gitlab-slack-integration/builds|gitlab-slack-integration builds>
   fields:                                                                                                                                                
     - short: false                                                                                                                                       
-      title: Notes                                                                                                                                       
+      title: Build Complete
       value: |
-        gitlab-slack-integration: build complete
-  pretext: |
-    <http://gitlab-slack-integration/builds|builds>
+          <http://gitlab-slack-integration/builds|gitlab-slack-integration builds>
+  # pretext: |
+  #   <http://gitlab-slack-integration/builds|gitlab-slack-integration builds>
 EOF
 
 json="$(cat json)"
