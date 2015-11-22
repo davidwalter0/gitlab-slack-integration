@@ -2,7 +2,8 @@
 ```
 (git-stamp)
 
-git-stamp: slackurl debugging at 2015.11.22.12.39.51.-05:00:00
+git-stamp: 2015.11.22.12.41.18.-05:00:00
+ at slackurl debugginggit-stamp: slackurl debugging at 2015.11.22.12.39.51.-05:00:00
 git-stamp: correct typo in slack-url name at 2015.11.22.12.37.59.-05:00:00
 git-stamp: . at 2015.11.22.12.35.55.-05:00:00
 git-stamp: change the permissions to 600 and the location of the slackurl to /tmp at 2015.11.22.12.35.01.-05:00:00
@@ -54,18 +55,18 @@ git commit -a -m "test commit at $(date +%Y.%m.%d.%H.%M.%S.%:::z)"; git push
 ```
 emacs function
 ```
- (save-excursion
- (next-line 2)
- (insert-string 
-   (format "\nPrior commit: %s %s\n"
-     (shell-command-to-string
-         "printf '%s %s %s %s %s %s' $(git log --format=' %h %ci ' -n1) \
-               $(git log --format='%D' -n1|cut -f 3,4 -d' '|sed -e 's/,//g')")
-     (shell-command-to-string
-         "git log --format='%s %N' -n1|head -1")))
- (shell-command-to-string "git commit -a -m \"Commit performed by git-stamp at $(date +%Y.%m.%d.%H.%M.%S.%::z)\"")
- (shell-command-to-string "git push github")
- (save-buffer)))
+;; (save-excursion
+;; (next-line 2)
+;; (insert-string 
+;;   (format "\nPrior commit: %s %s\n"
+;;     (shell-command-to-string
+;;         "printf '%s %s %s %s %s %s' $(git log --format=' %h %ci ' -n1) \
+;;               $(git log --format='%D' -n1|cut -f 3,4 -d' '|sed -e 's/,//g')")
+;;     (shell-command-to-string
+;;         "git log --format='%s %N' -n1|head -1")))
+;; (shell-command-to-string "git commit -a -m \"Commit performed by git-stamp at $(date +%Y.%m.%d.%H.%M.%S.%::z)\"")
+;; (shell-command-to-string "git push github")
+;; (save-buffer)))
 
 
 
@@ -87,8 +88,8 @@ emacs function
 ;;              "git log --format='%s %N' -n1|head -1")))
       (insert-string 
          (format "git-stamp: %s at %s" 
-           git-comment
-           (shell-command-to-string "date +%Y.%m.%d.%H.%M.%S.%::z")))
+           (shell-command-to-string "date +%Y.%m.%d.%H.%M.%S.%::z")
+           git-comment))
       (save-buffer)
       (shell-command-to-string (format "git commit -a -m \"%s by git-stamp at %s\"" 
            git-comment
