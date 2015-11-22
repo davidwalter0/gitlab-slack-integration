@@ -2,6 +2,7 @@
 ```
 (git-stamp)
 
+git-stamp: modified git-stamp at 2015.11.22.12.27.54.-05:00:00
 modified git-stamp, removed prior commit insert, correct indirect date call by git-stamp at 2015.11.22.12.27.06.-05:00:00
 
 ```
@@ -81,7 +82,7 @@ emacs function
 ;;          (shell-command-to-string
 ;;              "git log --format='%s %N' -n1|head -1")))
       (insert-string 
-         (format "%s by git-stamp at %s" 
+         (format "git-stamp: %s at %s" 
            git-comment
            (shell-command-to-string "date +%Y.%m.%d.%H.%M.%S.%::z")))
       (save-buffer)
