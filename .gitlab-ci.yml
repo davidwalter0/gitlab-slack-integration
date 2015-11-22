@@ -3,7 +3,7 @@ build-info:
     - echo "${HOSTNAME}" $(pwd) $(date)
     - ls -al 
     - echo ./slack-status build-info "${?}"
-    - ./slack-status build-info "${?}"
+    - bin/slack-status build-info "${?}"
   only:
     - master
   tags:

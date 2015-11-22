@@ -1,0 +1,74 @@
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: default
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: config
+  labels:
+    k8s-app: slack-config
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    k8s-app: slack-config
+    version: v1
+  template:
+    metadata:
+      labels:
+        k8s-app: slack-config
+        version: v1
+    spec:
+      containers:
+      - name: slack-config
+        env:
+        - name:  "SIMPLE_FILE_SERVER_PORT"
+          value: "80"
+        - name:  "SIMPLE_FILE_SERVER_PATH"
+          value: "/serve"
+        image: k8s-master-01:5000/k8s-simple-file-server:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: "serve"
+          mountPath: "/serve"
+        - name: "slackurl"
+          mountPath: "/serve/"
+      volumes:
+        - name: "serve"
+          emptyDir: {}
+        - name: "slackurl"
+          secret:
+            secretName: slack-config-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: slack-config
+  labels:
+    app: slack-config
+spec:
+  selector:
+    app: slack-config
+  ports:
+  - port: 80
+    name: slack-config
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: default
+  name: slack-config-secret
+data:
+  slackurl: 
+
+# local variables:
+# comment-start: "# "
+# mode: yaml
+# end:

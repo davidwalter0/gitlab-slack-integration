@@ -41,13 +41,13 @@ user=davidwalter0
 # make the json file one per call.
 json=$(mktemp)
 yaml2json --compress > ${json} <<EOF
-attachments:                                                                                                                                             
+attachments:                                                                                                        
 - color: "#D00000"
   user: GitlabWebhook
   fallback: |
      <http://${gitlabhost}/${user}/${short}/builds|${short} step: ${step} status: ${status}>
-  fields:                                                                                                                                                
-    - short: false                                                                                                                                       
+  fields:                                                                                   
+    - short: false                  
       # title: "<http://${gitlabhost}/${user}/builds|${short} step: ${step} status: ${status}>"
       value: |
         <http://${gitlabhost}/${user}/${short}/builds|${short} step: ${step} status: ${status}>
@@ -55,10 +55,12 @@ attachments:
   #   <http://${gitlabhost}/${user}/${short}/builds|${short} step: ${step} status: ${status}>
 EOF
 
-slackurl=/tmp/${short}-slack-url
+slackconfig=http://slack-config/slackurl
+slackurl=$(mktemp ${short}-slack-url.XXXX)
+curl --silent --output=${slackurl} ${slackconfig}
 echo slackurl=${slackurl}
 chmod 600 ${slackurl}
 if [[ -e ${slackurl} ]]; then
     curl --silent $(cat ${slackurl}) -d@"${json}"
 fi
-rm -f ${json}
+rm -f ${json} ${slackurl}

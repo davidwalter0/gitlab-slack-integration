@@ -1,6 +1,8 @@
 ### Text
 ```
 (git-stamp)
+
+git-stamp: 2015.11.22T.17.18.41.-05:00:00 at move scripts to bin
 git-stamp: 2015.11.22T.12.52.03.-05:00:00 at add mirror action to copy .slackurl to /tmp/${repo}-slack-url
 git-stamp: 2015.11.22T.12.45.37.-05:00:00 at slackurl debugging
 ```
@@ -129,7 +131,7 @@ TODO:
 [ ] auto insert into a standalone private registry and repository
 [ ] auto inject configurations for continuous runners
 [ ] include all members with notifications
-
+[ ] create config service for simple pull of config info from http://config/slackurl
 
 http://host/user/project/runners
 
