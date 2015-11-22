@@ -22,9 +22,8 @@ build-info:
           New open task [Build Completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments>
       EOF
       
-      yaml2json --compress < status.yaml > status.json
-      echo curl https://hooks.slack.com/services/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 -d@status.json
-      curl https://hooks.slack.com/services/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 -d@status.json
+      echo curl https://hooks.slack.com/services/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 -d"$(cat status.yaml | yaml2json --compress)"
+      curl https://hooks.slack.com/services/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 -d"$(cat status.yaml | yaml2json --compress)"
   only:
     - master
   tags:
