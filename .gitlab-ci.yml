@@ -1,13 +1,7 @@
 build-info:
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
-    # - docker info
-    # - pushd deploymentapi-deploy/python_app
-    # - image=falcon-app:latest
-    # - master=k8s-master-01
-    # - target=${master}:5000/${image}
-    # - if docker build --force-rm --rm --tag ${image} . ; then docker tag -f ${image} ${target}; docker push ${target}; fi
-    - > yaml
+    - echo > yaml
     - echo 'attachments:                                                                                                                                            '  >> yaml
     - echo '- color: "#D00000"                                                                                                                                      '  >> yaml
     - echo '  fallback: |                                                                                                                                           '  >> yaml
@@ -21,24 +15,6 @@ build-info:
     - echo '    New open task [Build Completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments>'  >> yaml
     - yaml2json --compress < yaml > json
     - curl https://hooks.slack.com/services/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 -d@json
-
-    # - |
-    #   yaml2json --compress > json <<EOF
-    #   attachments:
-    #   - color: "#D00000"
-    #     fallback: |
-    #       New open task [Build completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments>
-    #     fields:
-    #       - short: false
-    #         title: Notes
-    #         value: |
-    #           build text simulation
-    #     pretext: |
-    #       New open task [Build Completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments>
-    #   EOF
-
-      #echo curl https://hooks.slack.com/services/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 -d"$(cat status.yaml | yaml2json --compress)"
-      #curl https://hooks.slack.com/services/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 -d"$(cat status.yaml | yaml2json --compress)"
   only:
     - master
   tags:
