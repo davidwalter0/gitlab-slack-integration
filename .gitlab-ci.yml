@@ -1,7 +1,7 @@
 build-info:
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
-    - curl https://hooks.slack.com/services/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 -d'{"attachments":[{"color":"#D00000","fallback":"\u003chttp://gitlab-slack-integration/builds|builds\u003e\n","fields":[{"short":false,"title":"Notes","value":"gitlab-slack-integration: build complete\n"}],"pretext":"\u003chttp://gitlab-slack-integration/builds|builds\u003e\n"}]}'
+    - curl https://hooks.slack.com/services/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 -d@jaon
   only:
     - master
   tags:
