@@ -2,6 +2,10 @@
 ```
 (git-stamp)
 
+modified git-stamp, removed prior commit insert by git-stamp at /bin/bash: 2015.11.22.12.26.31.-05:00:00: command not found
+
+modified git-stamp 0704b5f 2015-11-22 11:50:20 -0500 master  add some thoughts on todo items 
+
 
 
 0704b5f 2015-11-22 11:50:20 -0500 master  add some thoughts on todo items 
@@ -75,17 +79,21 @@ emacs function
        (list (region-beginning) (region-end) git-comment)
        (list my-commit-history git-comment)
       (next-line)
+;;      (insert-string 
+;;        (format "\n%s %s %s\n" git-comment
+;;          (shell-command-to-string
+;;              "printf '%s %s %s %s %s %s' $(git log --format=' %h %ci ' -n1) \
+;;                    $(git log --format='%D' -n1|cut -f 3,4 -d' '|sed -e 's/,//g')")
+;;          (shell-command-to-string
+;;              "git log --format='%s %N' -n1|head -1")))
       (insert-string 
-        (format "\n%s %s %s\n" git-comment
-          (shell-command-to-string
-              "printf '%s %s %s %s %s %s' $(git log --format=' %h %ci ' -n1) \
-                    $(git log --format='%D' -n1|cut -f 3,4 -d' '|sed -e 's/,//g')")
-          (shell-command-to-string
-              "git log --format='%s %N' -n1|head -1")))
+         (format "%s by git-stamp at %s" 
+           git-comment
+           (shell-command-to-string "$(date +%Y.%m.%d.%H.%M.%S.%::z)")))
+      (save-buffer)
       (shell-command-to-string (format "git commit -a -m \"%s by git-stamp at %s\"" 
            git-comment
            "$(date +%Y.%m.%d.%H.%M.%S.%::z)")))
-      (save-buffer)
       (shell-command-to-string "git push github")))
 
 
