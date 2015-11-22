@@ -91,7 +91,15 @@ using the per project runners
 On the project page.
 
 
-TODO: extract and enable shared runners ]]
+TODO:
+
+[ ] auto extract and enable shared runners
+[ ] create a mirror yaml for replication controller/service for mirroring
+[ ] create a standalone config / yaml replication controller/service for gitlab-ci
+[ ] auto insert into a standalone private registry and repository
+[ ] auto inject configurations for continuous runners
+[ ] include all members with notifications
+
 
 http://host/user/project/runners
 
