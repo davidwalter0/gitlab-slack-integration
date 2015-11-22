@@ -2,14 +2,7 @@
 ```
 (git-stamp)
 
-git-stamp: 2015.11.22.12.41.18.-05:00:00
- at slackurl debugginggit-stamp: slackurl debugging at 2015.11.22.12.39.51.-05:00:00
-git-stamp: correct typo in slack-url name at 2015.11.22.12.37.59.-05:00:00
-git-stamp: . at 2015.11.22.12.35.55.-05:00:00
-git-stamp: change the permissions to 600 and the location of the slackurl to /tmp at 2015.11.22.12.35.01.-05:00:00
-git-stamp: test slack-status execution at 2015.11.22.12.29.46.-05:00:00
-git-stamp: modified git-stamp at 2015.11.22.12.27.54.-05:00:00
-
+git-stamp: 2015.11.22T.12.45.37.-05:00:00 at slackurl debugging
 ```
 
 
@@ -88,12 +81,13 @@ emacs function
 ;;              "git log --format='%s %N' -n1|head -1")))
       (insert-string 
          (format "git-stamp: %s at %s" 
-           (shell-command-to-string "date +%Y.%m.%d.%H.%M.%S.%::z")
+           (format-time-string "%Y.%m.%dT.%H.%M.%S.%::z")
            git-comment))
       (save-buffer)
-      (shell-command-to-string (format "git commit -a -m \"%s by git-stamp at %s\"" 
-           git-comment
-           "$(date +%Y.%m.%d.%H.%M.%S.%::z)")))
+      (shell-command-to-string
+         (format "git commit -a -m \"%s by git-stamp at %s\"" 
+                 git-comment
+                (format-time-string "%Y.%m.%dT.%H.%M.%S.%::z"))))
       (shell-command-to-string "git push github")))
 
 
