@@ -2,7 +2,7 @@
 ```
 (git-stamp)
 
-git-stamp: 2015.11.22T.12.45.37.-05:00:00 at slackurl debugging
+git-stamp: 2015.11.22T.12.51.50.-05:00:00 at add mirror action to copy .slackurl to /tmp/${repo}-slack-urlgit-stamp: 2015.11.22T.12.45.37.-05:00:00 at slackurl debugging
 ```
 
 
@@ -96,6 +96,8 @@ emacs function
 ### gitlab
 
 add /tmp/project-name-slackurl with the url of the slack channel to message
+by copying from .slackurl file to /tmp/${repo}-slack-url
+
 chmod 600 /tmp/project-name-slackurl
 slack-status must be run with the step-or-build option && rc
 
