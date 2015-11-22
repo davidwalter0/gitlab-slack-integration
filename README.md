@@ -3,6 +3,9 @@
 (git-stamp)
 
 
+Prior commit: d5c1a10 2015-11-21 23:53:34 -0500 master github/master Commit performed by git-stamp at 2015.11.21.23.53.34.-05:00:00 
+
+
 Prior commit: b603757 2015-11-21 23:51:18 -0500 master github/master cleanup, remove comments 
 
 ```
@@ -63,7 +66,6 @@ emacs function
           "git log --format='%s %N' -n1|head -1")))
   (shell-command-to-string "git commit -a -m \"Commit performed by git-stamp at $(date +%Y.%m.%d.%H.%M.%S.%::z)\"")
   (shell-command-to-string "git push github")
-  (shell-command-to-string "git push gitlab")
   (save-buffer)))
 
 ```

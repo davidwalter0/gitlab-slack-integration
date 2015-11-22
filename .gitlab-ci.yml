@@ -1,22 +1,7 @@
 build-info:
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
-    - |
-      cat > yaml <<EOF
-      attachments:                                                                                                                                             
-      - color: "#D00000"                                                                                                                                       
-        fallback: |                                                                                                                                            
-          New open task [Build completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments> 
-        fields:                                                                                                                                                
-          - short: false                                                                                                                                       
-            title: Notes                                                                                                                                       
-            value: |                                                                                                                                           
-              build text simulation                                                                                                                            
-        pretext: |                                                                                                                                             
-          New open task [Build Completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments> 
-      EOF
-      yaml2json --compress < yaml > json
-      curl https://hooks.slack.com/services/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 -d@json
+    - curl https://hooks.slack.com/services/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 '-d{"attachments":[{"color":"#D00000","fallback":"New open task [Build completion]: \u003chttps://hooks.slack.com/services/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|Test out Slack message attachments\u003e\n","fields":[{"short":false,"title":"Notes","value":"- build text simulation\n"}],"pretext":"New open task [Build Completion]: \u003chttps://hooks.slack.com/services/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|Test out Slack message attachments\u003e\n"}]}'
   only:
     - master
   tags:

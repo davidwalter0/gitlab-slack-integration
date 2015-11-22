@@ -1,0 +1,18 @@
+#!/bin/bash
+yaml2json --compress > json <<EOF
+attachments:                                                                                                                                             
+- color: "#D00000"
+  fallback: |
+    New open task [Build completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments> 
+  fields:                                                                                                                                                
+    - short: false                                                                                                                                       
+      title: Notes                                                                                                                                       
+      value: |
+        build text simulation
+  pretext: |
+    New open task [Build Completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments> 
+EOF
+
+json="$(cat json)"
+echo curl https://hooks.slack.com/services/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 -d"${json}"
+curl --silent https://hooks.slack.com/services/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 -d"${json}"
