@@ -2,15 +2,19 @@
 yaml2json --compress > json <<EOF
 attachments:                                                                                                                                             
 - color: "#D00000"
+  fallback: |
+    <http://gitlab-slack-integration/builds|builds>
   fields:                                                                                                                                                
     - short: false                                                                                                                                       
       title: Notes                                                                                                                                       
       value: |
-        New open task [Build completion]: <http://k8s-node-02/davidwalter0/gitlab-slack-integration/builds|Build> 
+        gitlab-slack-integration: build complete
+  pretext: |
+    <http://gitlab-slack-integration/builds|builds>
 EOF
 
 json="$(cat json)"
-echo curl https://hooks.slack.com/services/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 -d"${json}"
+echo curl https://hooks.slack.com/services/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 -d"'${json}'"
 curl --silent https://hooks.slack.com/services/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 -d"${json}"
 exit
 yaml2json --compress > json <<EOF
