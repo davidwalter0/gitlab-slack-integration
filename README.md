@@ -2,6 +2,7 @@
 ```
 (git-stamp)
 
+git-stamp: correct typo in slack-url name at 2015.11.22.12.37.59.-05:00:00
 git-stamp: . at 2015.11.22.12.35.55.-05:00:00
 git-stamp: change the permissions to 600 and the location of the slackurl to /tmp at 2015.11.22.12.35.01.-05:00:00
 git-stamp: test slack-status execution at 2015.11.22.12.29.46.-05:00:00
