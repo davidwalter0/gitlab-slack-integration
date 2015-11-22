@@ -1,21 +1,25 @@
 #!/bin/bash
+dir=$(dirname $(readlink -f ${0}))
+short=$(basename ${dir})
+gitlabhost=k8s-node-02
+user=davidwalter0
 yaml2json --compress > json <<EOF
 attachments:                                                                                                                                             
 - color: "#D00000"
   user: GitlabWebhook
   fallback: |
-    <http://gitlab-slack-integration/builds|gitlab-slack-integration builds>
+     <http://${gitlabhost}/${user}/${short}/builds|${short} build complete>
   fields:                                                                                                                                                
     - short: false                                                                                                                                       
-      title: Build Complete
+      # title: "<http://${gitlabhost}/${user}/builds|${short} build complete>"
       value: |
-          <http://gitlab-slack-integration/builds|gitlab-slack-integration builds>
+        <http://${gitlabhost}/${user}/${short}/builds|${short} build complete>
   # pretext: |
-  #   <http://gitlab-slack-integration/builds|gitlab-slack-integration builds>
+  #   <http://${gitlabhost}/${user}/${short}/builds|${short} build complete>
 EOF
 
 json="$(cat json)"
-echo curl https://hooks.slack.com/services/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 -d"'${json}'"
+echo curl --silent https://hooks.slack.com/services/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 -d"'${json}'"
 curl --silent https://hooks.slack.com/services/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 -d"${json}"
 exit
 yaml2json --compress > json <<EOF

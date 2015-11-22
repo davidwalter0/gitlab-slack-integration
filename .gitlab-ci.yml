@@ -1,7 +1,7 @@
 build-info:
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
-    - curl https://hooks.slack.com/services/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 -d"$(eval $(cat json))"
+    - curl --silent https://hooks.slack.com/services/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 -d@json
   only:
     - master
   tags:
