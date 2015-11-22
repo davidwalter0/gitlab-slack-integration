@@ -56,6 +56,7 @@ attachments:
 EOF
 
 slackurl=/tmp/${short}-slack-url
+echo slackurl=${slackurl}
 chmod 600 ${slackurl}
 if [[ -e ${slackurl} ]]; then
     curl --silent $(cat ${slackurl}) -d@"${json}"
