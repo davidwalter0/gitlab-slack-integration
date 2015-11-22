@@ -67,45 +67,18 @@ emacs function
 ---
 ### gitlab
 
-```
-#!/bin/bash
-function monitor
-{
-    local gitlab=k8s-node-02
-    local user=davidwalter0
-    local github=github.com
-    mkdir -p /var/lib/mirror
-    while : ; do
-        for fullrepo in  git@${github}:${user}/k8s-simple-forward.git ; do
-            repo="${fullrepo##*/}"
-            name="${repo##*/}"
-            name="${repo%.git}"
-            gitlabrepo=git@${gitlab}:${user}/${repo}
+add .slackurl with the url of the slack channel to message
 
-            cd /var/lib/mirror
+slack-status must be run with the step-or-build option && rc
 
-            if [[ ! -e ${name} ]]; then
-                git clone ${fullrepo}
-                cd /var/lib/mirror/${name}
-                git config push.default simple
-                git remote add github ${fullrepo}
-                # git remote add origin ${fullrepo}
-                git remote add gitlab ${gitlabrepo}
-            else
-                cd /var/lib/mirror/${name}
-            fi
-            if git pull github master; then
-                git push gitlab master
-            fi
-        done
-        sleep 60
-        break
-    done
-}
+---
+### mirror
 
-monitor
+mirror --repos=repos-space-separated-file-list
 
-```
+continuous monitoring of a restricted list of repositories pulling
+commits and posting to a private repo.
+
 
 ---
 ### configure the gitlab runner instances to auto register
