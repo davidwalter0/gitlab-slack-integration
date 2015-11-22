@@ -3,6 +3,9 @@
 (git-stamp)
 
 
+
+0704b5f 2015-11-22 11:50:20 -0500 master  add some thoughts on todo items 
+
 ```
 
 
@@ -48,20 +51,43 @@ git commit -a -m "test commit at $(date +%Y.%m.%d.%H.%M.%S.%:::z)"; git push
 ```
 emacs function
 ```
+ (save-excursion
+ (next-line 2)
+ (insert-string 
+   (format "\nPrior commit: %s %s\n"
+     (shell-command-to-string
+         "printf '%s %s %s %s %s %s' $(git log --format=' %h %ci ' -n1) \
+               $(git log --format='%D' -n1|cut -f 3,4 -d' '|sed -e 's/,//g')")
+     (shell-command-to-string
+         "git log --format='%s %N' -n1|head -1")))
+ (shell-command-to-string "git commit -a -m \"Commit performed by git-stamp at $(date +%Y.%m.%d.%H.%M.%S.%::z)\"")
+ (shell-command-to-string "git push github")
+ (save-buffer)))
+
+
+
 (defun git-stamp ()
+  ;; (interactive)
+  ;; (interactive "scomment prefix %s to: ")
   (interactive)
-  (save-excursion
-  (next-line 2)
-  (insert-string 
-    (format "\nPrior commit: %s %s\n"
-      (shell-command-to-string
-          "printf '%s %s %s %s %s %s' $(git log --format=' %h %ci ' -n1) \
-                $(git log --format='%D' -n1|cut -f 3,4 -d' '|sed -e 's/,//g')")
-      (shell-command-to-string
-          "git log --format='%s %N' -n1|head -1")))
-  (shell-command-to-string "git commit -a -m \"Commit performed by git-stamp at $(date +%Y.%m.%d.%H.%M.%S.%::z)\"")
-  (shell-command-to-string "git push github")
-  (save-buffer)))
+   (save-excursion
+   (let ((git-comment (read-string "git-commit-text: " nil 'my-commit-history)))
+       (list (region-beginning) (region-end) git-comment)
+       (list my-commit-history git-comment)
+      (next-line)
+      (insert-string 
+        (format "\n%s %s %s\n" git-comment
+          (shell-command-to-string
+              "printf '%s %s %s %s %s %s' $(git log --format=' %h %ci ' -n1) \
+                    $(git log --format='%D' -n1|cut -f 3,4 -d' '|sed -e 's/,//g')")
+          (shell-command-to-string
+              "git log --format='%s %N' -n1|head -1")))
+      (shell-command-to-string (format "git commit -a -m \"%s by git-stamp at %s\"" 
+           git-comment
+           "$(date +%Y.%m.%d.%H.%M.%S.%::z)")))
+      (save-buffer)
+      (shell-command-to-string "git push github")))
+
 
 ```
 ---
