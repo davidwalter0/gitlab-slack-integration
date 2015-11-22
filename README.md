@@ -2,6 +2,7 @@
 ```
 (git-stamp)
 
+git-stamp: change the permissions to 600 and the location of the slackurl to /tmp at 2015.11.22.12.35.01.-05:00:00
 git-stamp: test slack-status execution at 2015.11.22.12.29.46.-05:00:00
 git-stamp: modified git-stamp at 2015.11.22.12.27.54.-05:00:00
 
@@ -96,8 +97,8 @@ emacs function
 ---
 ### gitlab
 
-add .slackurl with the url of the slack channel to message
-
+add /tmp/project-name-slackurl with the url of the slack channel to message
+chmod 600 /tmp/project-name-slackurl
 slack-status must be run with the step-or-build option && rc
 
 ---

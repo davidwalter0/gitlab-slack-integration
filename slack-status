@@ -55,8 +55,8 @@ attachments:
   #   <http://${gitlabhost}/${user}/${short}/builds|${short} step: ${step} status: ${status}>
 EOF
 
-slackurl=${dir}/.slackurl
-
+slackurl=/tmp/${short}-.slackurl
+chmod 600 ${slackurl}
 if [[ -e ${slackurl} ]]; then
     curl --silent $(cat ${slackurl}) -d@"${json}"
 fi
