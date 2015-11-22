@@ -1,0 +1,8 @@
+build-info:
+  script: 
+    - echo "${HOSTNAME}" $(pwd) $(date)
+  only:
+    - master
+  tags:
+    - shell
+    - ssh

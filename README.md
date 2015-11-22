@@ -5,6 +5,9 @@
 
 Prior commit: 59e1cd4 2015-11-21 13:30:02 -0500 master origin/master Commit performed by git-stamp at 2015.11.21.13.30.02.-05 
 
+Prior commit: 1a98d5b 2015-11-21 13:33:11 -0500 master origin/master Commit performed by git-stamp at 2015.11.21.13.33.11.-05:00:00 
+
+
 
 ```
 
@@ -63,5 +66,47 @@ emacs function
   (shell-command-to-string "git commit -a -m \"Commit performed by git-stamp at $(date +%Y.%m.%d.%H.%M.%S.%::z)\"")
   (shell-command-to-string "git push")
   (save-buffer)))
+
+```
+---
+### gitlab
+
+```
+#!/bin/bash
+function monitor
+{
+    local gitlab=k8s-node-02
+    local user=davidwalter0
+    local github=github.com
+    mkdir -p /var/lib/mirror
+    while : ; do
+        for fullrepo in  git@${github}:${user}/k8s-simple-forward.git ; do
+            repo="${fullrepo##*/}"
+            name="${repo##*/}"
+            name="${repo%.git}"
+            gitlabrepo=git@${gitlab}:${user}/${repo}
+
+            cd /var/lib/mirror
+
+            if [[ ! -e ${name} ]]; then
+                git clone ${fullrepo}
+                cd /var/lib/mirror/${name}
+                git config push.default simple
+                git remote add github ${fullrepo}
+                # git remote add origin ${fullrepo}
+                git remote add gitlab ${gitlabrepo}
+            else
+                cd /var/lib/mirror/${name}
+            fi
+            if git pull github master; then
+                git push gitlab master
+            fi
+        done
+        sleep 60
+        break
+    done
+}
+
+monitor
 
 ```
