@@ -8,9 +8,9 @@ build-info:
     # - target=${master}:5000/${image}
     # - if docker build --force-rm --rm --tag ${image} . ; then docker tag -f ${image} ${target}; docker push ${target}; fi
     - |
-      cat > status.yaml <<EOF
+      curl https://hooks.slack.com/services/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 -d"$(yaml2json --compress <<EOF
       attachments:
-      - color: "#D00000"
+      - color: \"#D00000\"
         fallback: |
           New open task [Build completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments>
         fields:
@@ -21,9 +21,9 @@ build-info:
         pretext: |
           New open task [Build Completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments>
       EOF
-      
-      echo curl https://hooks.slack.com/services/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 -d"$(cat status.yaml | yaml2json --compress)"
-      curl https://hooks.slack.com/services/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 -d"$(cat status.yaml | yaml2json --compress)"
+      )"
+      #echo curl https://hooks.slack.com/services/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 -d"$(cat status.yaml | yaml2json --compress)"
+      #curl https://hooks.slack.com/services/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 -d"$(cat status.yaml | yaml2json --compress)"
   only:
     - master
   tags:
