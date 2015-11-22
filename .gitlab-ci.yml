@@ -8,7 +8,7 @@ build-info:
     # - target=${master}:5000/${image}
     # - if docker build --force-rm --rm --tag ${image} . ; then docker tag -f ${image} ${target}; docker push ${target}; fi
     - |
-      text=$(yaml2json --compress <<EOF
+      cat > status <<EOF
       attachments:
       - color: "#D00000"
         fallback: |
@@ -22,10 +22,8 @@ build-info:
           New open task [Build Completion]: <https://hooks.slack.com/services/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|Test out Slack message attachments>
 
       EOF
-      )
-      json="$(echo ${text}|yaml2json --compress)"
-      echo curl https://hooks.slack.com/services/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 -d"${json}"
-      curl https://hooks.slack.com/services/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 -d"${json}"
+      echo curl https://hooks.slack.com/services/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 -d"$(yaml2json --compress < status)"
+      curl https://hooks.slack.com/services/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 -d"$(yaml2json --compress < status)"
   only:
     - master
   tags:
