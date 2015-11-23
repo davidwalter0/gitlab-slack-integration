@@ -6,7 +6,7 @@ template=slack-config-template.yaml
 yaml=${template//-template/}
 function make-yaml-stdio
 {
-    slackurl=${dir}/.slackurl
+    slackurl=${dir}/../.slackurl
     slackurlbase64=$(base64 -w 0 ${slackurl})
 
     sed -r                                              \

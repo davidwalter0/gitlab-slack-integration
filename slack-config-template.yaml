@@ -6,19 +6,19 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: config
+  name: slack-config
   labels:
-    k8s-app: slack-config
+    app: slack-config
     version: v1
 spec:
   replicas: 1
   selector:
-    k8s-app: slack-config
+    app: slack-config
     version: v1
   template:
     metadata:
       labels:
-        k8s-app: slack-config
+        app: slack-config
         version: v1
     spec:
       containers:
@@ -33,13 +33,9 @@ spec:
         ports:
         - containerPort: 80
         volumeMounts:
-        - name: "serve"
-          mountPath: "/serve"
         - name: "slackurl"
-          mountPath: "/serve/"
+          mountPath: "/serve"
       volumes:
-        - name: "serve"
-          emptyDir: {}
         - name: "slackurl"
           secret:
             secretName: slack-config-secret

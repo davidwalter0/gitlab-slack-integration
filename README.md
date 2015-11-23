@@ -113,17 +113,28 @@ commits and posting to a private repo.
 
 
 ---
-### configure the gitlab runner instances to auto register
+### bin/make-yaml
 
-extract the settings -- http://host/ci/admin/runners : get the token
-from the admin page and use this token to register that will allow
-auto registration across projects [ shared runners ], rather than
-using the per project runners
+generate the yaml for an execute run after capturing the slack url to
+the .slackurl will enable the url to be written to a secret in the
+cluster when the pod is created for the slack-config instance.
 
-On the project page.
+make-yaml reads the slack-config-template.yaml and writes the
+slack-config.yaml
 
 
-TODO:
+```
+
+bin/make-yaml
+
+kubectl create -f slack-config.yaml 
+
+```
+
+
+---
+
+### TODO
 
 [ ] auto extract and enable shared runners
 [ ] create a mirror yaml for replication controller/service for mirroring
@@ -135,4 +146,14 @@ TODO:
 
 http://host/user/project/runners
 
+
+---
+### configure the gitlab runner instances to auto register
+
+extract the settings -- http://host/ci/admin/runners : get the token
+from the admin page and use this token to register that will allow
+auto registration across projects [ shared runners ], rather than
+using the per project runners
+
+On the project page.
 

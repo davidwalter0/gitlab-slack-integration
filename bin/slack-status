@@ -1,4 +1,5 @@
-#!/bin/bash -x
+#!/bin/bash
+
 function usage
 {
     echo ${0##*/} step-or-current-process-name return-code
@@ -35,7 +36,8 @@ case ${status} in
 esac
 
 dir=$(dirname $(readlink -f ${0}))
-short=${dir##*/}
+short=${dir%/*}
+short=${short##*/}
 gitlabhost=k8s-node-02
 user=davidwalter0
 # make the json file one per call.
@@ -56,8 +58,8 @@ attachments:
 EOF
 
 slackconfig=http://slack-config/slackurl
-slackurl=$(mktemp ${short}-slack-url.XXXX)
-curl --silent --output=${slackurl} ${slackconfig}
+slackurl=$(mktemp /tmp/slack-url.XXXX)
+curl --silent --output ${slackurl} ${slackconfig}
 echo slackurl=${slackurl}
 chmod 600 ${slackurl}
 if [[ -e ${slackurl} ]]; then
