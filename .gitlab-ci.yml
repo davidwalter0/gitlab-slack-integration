@@ -3,13 +3,25 @@ variables:
   gitlab_host: 128.107.15.214
   config_url:  http://secret-config/slackurl
 
-build-info:
+build-ack:
+  script: 
+    - echo "${HOSTNAME}" $(pwd) $(date)
+    - ls -al 
+    - echo bin/slack-status --step=gitlab-slack-integration --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
+    - bin/slack-status --step=gitlab-slack-integration --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
+
+  only:
+    - master
+  tags:
+    - shell
+    - ssh
+
+build-nak:
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
     - ls -al 
     - echo ./slack-status build-info "${?}"
     - bin/slack-status build-info "${?}"
-    - bin/slack-status --step=gitlab-slack-integration --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${?}
 
   only:
     - master
