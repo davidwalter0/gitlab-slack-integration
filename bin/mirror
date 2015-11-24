@@ -7,7 +7,7 @@ function timestamp
 
 function usage
 {
-    echo ${0##*/} --repo-list=repo-file-list --gitlab-user=username
+    echo ${0##*/} --repo-list=repo-file-list --gitlab-user=username --gitlab-host=host-or-ip --delay=delay-seconds-between-runs --mirror-path=path-to-store-repos
 
     echo ${0} requires a repository file with space separated
     echo       repository urls and push-to user[gitlab-user] 
@@ -18,11 +18,11 @@ function usage
 
 function monitor
 {
-    local gitlab=128.107.15.214     # k8s-node-02
+    local gitlab_host=128.107.15.214     # k8s-node-02
     # local github_user=davidwalter0
     local gitlab_user=build.bot.0
     local github=github.com
-
+    local mirror_path=/var/lib/mirror
     for arg in ${@}; do
         case ${arg} in
             --repo-list=*)
@@ -34,6 +34,15 @@ function monitor
             --gitlab-user=*)
                 gitlab_user=${arg##*=}
                 ;;
+            --gitlab-host=*)
+                gitlab_host=${arg##*=}
+                ;;
+            --delay=*)
+                delay=${arg##*=}
+                ;;
+            --mirror-path=*)
+                mirror_path=${arg##*=}
+                ;;
             # --repo-list*|--gitlab-user*|--github-user*)
             --repo-list*|--gitlab-user*)
                 usage
@@ -43,7 +52,7 @@ function monitor
         esac
     done
 
-    if ! mkdir -p /var/lib/mirror; then
+    if ! mkdir -p ${mirror_path}; then
         printf "Failed to create /var/lib/mirror, are you running with the correct permissions?\n\n"
         usage
     fi
@@ -57,28 +66,30 @@ function monitor
             name="${repo##*/}"
             name="${repo%.git}"
                     
-            cd /var/lib/mirror
+            cd ${mirror_path}
 
-            gitlabrepo=git@${gitlab}:${gitlab_user}/${repo}
+            gitlabrepo=git@${gitlab_host}:${gitlab_user}/${repo}
+
             if [[ ! -e ${name} ]]; then
                 git clone ${fullrepo}
-                cd /var/lib/mirror/${name}
+                cd ${mirror_path}/${name}
                 git config push.default simple
-                git remote add gitlab ${gitlabrepo}
+                git remote add src ${fullrepo}
+                git remote add dst ${gitlabrepo}
             else
-                cd /var/lib/mirror/${name}
+                cd ${mirror_path}/${name}
             fi
 
             if git checkout master &>/dev/null ; then
-                if git pull github master; then
+                if git pull src master; then
                     echo $(timestamp) pushing repo ${gitlabrepo} master
-                    git push gitlab master
+                    git push dst master
                 fi
             fi
             if git checkout k8s-cfg &>/dev/null ; then
-                if git pull github k8s-cfg; then
+                if git pull src k8s-cfg; then
                     echo $(timestamp) pushing repo ${gitlabrepo} k8s-cfg
-                    git push gitlab k8s-cfg
+                    git push dst k8s-cfg
                 fi
             fi
         done
