@@ -85,7 +85,7 @@ function main
             yaml2json --compress > ${json} <<EOF
 attachments:                                                                                                        
 - color: "${color}"
-  user: GitlabWebhook
+  user: Gitlab-CI
   fallback: |
      <http://${gitlab_host}/${gitlab_user}/${short}/builds|${short} step: ${step} status: ${status}>
   fields:                                                                                   
