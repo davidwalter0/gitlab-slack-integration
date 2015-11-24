@@ -1,6 +1,5 @@
 ### gitlab integrations
 
-[![build status](http://k8s-node-02/ci/projects/3/status.png?ref=master)](http://k8s-node-02/ci/projects/3?ref=master)
 [![build status](http://128.107.15.214/ci/projects/8/status.png?ref=master)](http://128.107.15.214/ci/projects/8?ref=master)
 
 ```
