@@ -23,6 +23,7 @@ function monitor
     local gitlab_user=build.bot.0
     local github=github.com
     local mirror_path=/var/lib/mirror
+    local delay=360
     for arg in ${@}; do
         case ${arg} in
             --repo-list=*)
@@ -93,8 +94,8 @@ function monitor
                 fi
             fi
         done
-        echo $(timestamp) end poll run
-        sleep 60
+        echo $(timestamp) end poll run sleeping ${delay} seconds
+        sleep ${delay}
     done
 }
 
