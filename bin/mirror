@@ -61,11 +61,6 @@ function monitor
                     git push gitlab k8s-cfg
                 fi
             fi
-            if [[ ! -e .slackurl ]]; then
-               curl --silent --output=/tmp/${name}-slack-url http://config/slackurl
-            else
-               cp .slackurl /tmp/${name}-slack-url
-            fi
         done
         echo end poll run $(date +%Y.%m.%d.%H.%M.%S.%::z)
         sleep 60

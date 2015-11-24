@@ -1,4 +1,5 @@
 #!/bin/bash
+debug=0
 
 function usage
 {
@@ -42,7 +43,19 @@ gitlabhost=k8s-node-02
 user=davidwalter0
 # make the json file one per call.
 json=$(mktemp)
-yaml2json --compress > ${json} <<EOF
+slackconfig=http://slack-config/slackurl
+slackurl=$(mktemp /tmp/slack-url.XXXX)
+
+if (( debug )) ; then
+    ssh k8s-node-02 curl --silent http://slack-config/slackurl > ${slackurl}
+else
+    curl --silent --output ${slackurl} ${slackconfig}
+fi
+echo slackurl=${slackurl}
+chmod 600 ${slackurl}
+if [[ -e ${slackurl} ]]; then
+    for url in $(cat ${slackurl}); do
+        yaml2json --compress > ${json} <<EOF
 attachments:                                                                                                        
 - color: "#D00000"
   user: GitlabWebhook
@@ -56,13 +69,8 @@ attachments:
   # pretext: |
   #   <http://${gitlabhost}/${user}/${short}/builds|${short} step: ${step} status: ${status}>
 EOF
-
-slackconfig=http://slack-config/slackurl
-slackurl=$(mktemp /tmp/slack-url.XXXX)
-curl --silent --output ${slackurl} ${slackconfig}
-echo slackurl=${slackurl}
-chmod 600 ${slackurl}
-if [[ -e ${slackurl} ]]; then
-    curl --silent $(cat ${slackurl}) -d@"${json}"
+        #curl --silent $(cat ${slackurl}) -d@"${json}"
+        curl --silent ${url} -d@"${json}"
+    done
 fi
 rm -f ${json} ${slackurl}

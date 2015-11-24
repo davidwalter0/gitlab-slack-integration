@@ -7,6 +7,10 @@ git-stamp: 2015.11.22T.12.52.03.-05:00:00 at add mirror action to copy .slackurl
 git-stamp: 2015.11.22T.12.45.37.-05:00:00 at slackurl debugging
 ```
 
+*slack integration from official documentation*
+
+https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/integration/slack.md
+
 
 *Configure gitlab channel monitor gitlab+slack*
 ```
@@ -157,3 +161,60 @@ using the per project runners
 
 On the project page.
 
+---
+### gitlab curl api access and modifications
+
+*for bash* export the access token from the users private TOKEN on the url ...
+
+    https://host/profile/account page
+
+export TOKEN=XYZABC...
+
+curl --silent --header "PRIVATE-TOKEN: ${TOKEN}" http://k8s-node-02/api/v3/projects/9/services/gitlab_ci|jq .
+
+```
+{
+  "id": 200,
+  "title": "GitLab CI",
+  "created_at": "2015-11-22T21:55:18.356Z",
+  "updated_at": "2015-11-22T22:38:23.421Z",
+  "active": true,
+  "push_events": true,
+  "issues_events": true,
+  "merge_requests_events": true,
+  "tag_push_events": true,
+  "note_events": true,
+  "properties": {}
+}
+```
+
+curl --silent --header "PRIVATE-TOKEN: ${TOKEN}" http://k8s-node-02/api/v3/projects/9/services/slack|jq .
+
+set the webhook either on the services slack page or via a script
+WEBHOOK=https://hooks.slack.com/services/.../.../...
+WEBHOOKNAME="CI WebHook"
+WEBHOOKCHANNEL="#gitlab"
+
+Channel names appear to be optional for slack.
+
+```
+
+
+{
+  "id": 207,
+  "title": "Slack",
+  "created_at": "2015-11-22T21:55:18.402Z",
+  "updated_at": "2015-11-22T22:04:29.211Z",
+  "active": true,
+  "push_events": true,
+  "issues_events": true,
+  "merge_requests_events": true,
+  "tag_push_events": true,
+  "note_events": true,
+  "properties": {
+    "webhook": "${WEBHOOK}",
+    "username": "GitlabWebhook",
+    "channel": "#gitlab"
+  }
+}
+```
