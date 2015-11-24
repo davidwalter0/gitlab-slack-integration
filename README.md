@@ -1,11 +1,15 @@
 ### gitlab integrations
 
 [![build status](http://k8s-node-02/ci/projects/3/status.png?ref=master)](http://k8s-node-02/ci/projects/3?ref=master)
+[![build status](http://128.107.15.214/ci/projects/8/status.png?ref=master)](http://128.107.15.214/ci/projects/8?ref=master)
 
 ```
 (git-stamp)
 
-git-stamp: 2015.11.24T.11.44.57.-05:00:00 at add status badge to buildgit-stamp: 2015.11.22T.17.18.41.-05:00:00 at move scripts to bin
+git-stamp: 2015.11.24T.12.10.47.-05:00:00 at add status badge for gitlab build.bot
+git-stamp: 2015.11.24T.11.44.57.-05:00:00 at add status badge to build
+
+git-stamp: 2015.11.22T.17.18.41.-05:00:00 at move scripts to bin
 git-stamp: 2015.11.22T.12.52.03.-05:00:00 at add mirror action to copy .slackurl to /tmp/${repo}-slack-url
 git-stamp: 2015.11.22T.12.45.37.-05:00:00 at slackurl debugging
 ```
