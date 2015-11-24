@@ -6,6 +6,7 @@
 ```
 (git-stamp)
 
+git-stamp: 2015.11.24T.12.13.32.-05:00:00 at modify url for links redirect to ip
 git-stamp: 2015.11.24T.12.10.47.-05:00:00 at add status badge for gitlab build.bot
 git-stamp: 2015.11.24T.11.44.57.-05:00:00 at add status badge to build
 

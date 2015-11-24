@@ -1,6 +1,17 @@
 #!/bin/bash
 debug=0
 
+dir=$(dirname $(readlink -f ${0}))
+short=${dir%/*}
+short=${short##*/}
+gitlabhost=k8s-node-02
+gitlabhost=128.107.15.214
+user=davidwalter0
+# make the json file one per call.
+json=$(mktemp)
+slackconfig=http://slack-config/slackurl
+slackurl=$(mktemp /tmp/slack-url.XXXX)
+
 function usage
 {
     echo ${0##*/} step-or-current-process-name return-code
@@ -35,16 +46,6 @@ case ${status} in
         status="process or sequence error"
         ;;
 esac
-
-dir=$(dirname $(readlink -f ${0}))
-short=${dir%/*}
-short=${short##*/}
-gitlabhost=k8s-node-02
-user=davidwalter0
-# make the json file one per call.
-json=$(mktemp)
-slackconfig=http://slack-config/slackurl
-slackurl=$(mktemp /tmp/slack-url.XXXX)
 
 if (( debug )) ; then
     ssh k8s-node-02 curl --silent http://slack-config/slackurl > ${slackurl}
