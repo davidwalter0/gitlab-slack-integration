@@ -16,22 +16,8 @@ build-ack:
     - shell
     - ssh
 
-build-nak:
-  script: 
-    - echo "${HOSTNAME}" $(pwd) $(date)
-    - ls -al 
-    - echo ./slack-status build-info "${?}"
-    - bin/slack-status build-info "${?}"
-
-  only:
-    - master
-  tags:
-    - shell
-    - ssh
-
 build-env:
   script:
-    - set +x
     - echo '########################################################################'
     - echo "${HOSTNAME}" $(pwd) $(date)
     - echo '########################################################################'
@@ -41,6 +27,19 @@ build-env:
     - set
     - echo '########################################################################'
     - exit 0
+
+  only:
+    - master
+  tags:
+    - shell
+    - ssh
+
+build-nak:
+  script: 
+    - echo "${HOSTNAME}" $(pwd) $(date)
+    - ls -al 
+    - echo ./slack-status build-info "${?}"
+    - bin/slack-status build-info "${?}"
 
   only:
     - master
