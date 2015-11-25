@@ -1,0 +1,293 @@
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: falcon-api
+  namespace: default
+  labels:
+    app: falcon-api
+spec:
+  replicas: 1
+  selector:
+    app: falcon-api
+  template:
+    metadata:
+      labels:
+        app: falcon-api
+    spec:
+      restartPolicy: Always
+      containers:
+      # falcon-api
+      - name: falcon-api
+        privileged: true
+        image: falcon-api
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: api
+      # falcon-consul
+      - name: falcon-consul
+        privileged: true
+        image: falcon-consul
+        command:
+          - /bin/consul
+        args:
+          - agent
+          - -server
+          - -bootstrap
+          - -config-dir=/config
+          - -bind=127.0.0.1
+        ports:
+        # ------------
+        # TCP
+        # ------------
+        - containerPort: 8300
+          protocol: TCP
+          name: tcp0
+        - containerPort: 8301
+          protocol: TCP
+          name: tcp1
+        - containerPort: 8302
+          protocol: TCP
+          name: tcp2
+        - containerPort: 8400
+          name: tcp3
+        - containerPort: 8500
+          name: tcp4
+        - containerPort: 53
+          protocol: TCP
+          name: tcp5
+        # ------------
+        # UDP
+        # ------------
+        - containerPort: 8301
+          protocol: UDP
+          name: udp0
+        - containerPort: 8302
+          protocol: UDP
+          name: udp1
+        - containerPort: 53
+          name: udp2
+          protocol: UDP
+      # falcon-mariadb
+      - name: falcon-mariadb
+        privileged: true
+        image: falcon-mariadb
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306
+          name: mariadb
+      # falcon-vault
+      - name: falcon-vault
+        privileged: true
+        image: falcon-vault
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8200
+          name: vault
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: falcon-app
+  namespace: default
+  labels:
+    app: falcon-app
+spec:
+  replicas: 1
+  selector:
+    app: falcon-app
+  template:
+    metadata:
+      labels:
+        app: falcon-app
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: falcon-app
+        privileged: true
+        image: falcon-app
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: falcon-api
+spec:
+  ports:
+    # ------------
+    # TCP
+    # ------------
+    # mariadb
+  - port: 3306
+    name: mariadb
+    protocol: TCP
+    # api
+  - port: 8080
+    name: api
+    protocol: TCP
+    # vault
+  - port: 8200
+    name: vault
+    protocol: TCP
+    # consul
+  - port: 8300
+    name: tcp0
+    protocol: TCP
+  - port: 8301
+    name: tcp1
+    protocol: TCP
+  - port: 8302
+    name: tcp2
+    protocol: TCP
+  - port: 8400
+    name: tcp3
+    protocol: TCP
+  - port: 8500
+    name: tcp4
+    protocol: TCP
+  - port: 53
+    name: tcp5
+    protocol: TCP
+    # ------------
+    # UDP
+    # ------------
+  - port: 8301
+    name: udp0
+    protocol: UDP
+  - port: 8302
+    name: udp1
+    protocol: UDP
+  - port: 53
+    name: udp2
+    protocol: UDP
+  selector:
+    app: falcon-api
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#    name: consul1
+# spec:
+#   ports:
+#     # ------------
+#     # TCP
+#     # ------------
+#     # mariadb
+#   - port: 3306
+#     name: mariadb
+#     protocol: TCP
+#     # api
+#   - port: 8080
+#     name: api
+#     protocol: TCP
+#     # vault
+#   - port: 8200
+#     name: vault
+#     protocol: TCP
+#     # consul
+#   - port: 8300
+#     name: tcp0
+#     protocol: TCP
+#   - port: 8301
+#     name: tcp1
+#     protocol: TCP
+#   - port: 8302
+#     name: tcp2
+#     protocol: TCP
+#   - port: 8400
+#     name: tcp3
+#     protocol: TCP
+#   - port: 8500
+#     name: tcp4
+#     protocol: TCP
+#   - port: 53
+#     name: tcp5
+#     protocol: TCP
+#     # ------------
+#     # UDP
+#     # ------------
+#   - port: 8301
+#     name: udp0
+#     protocol: UDP
+#   - port: 8302
+#     name: udp1
+#     protocol: UDP
+#   - port: 53
+#     name: udp2
+#     protocol: UDP
+#   selector:
+#     app: falcon-api
+
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#    name: consul1
+# spec:
+#   ports:
+#   - port: 8080
+#     name: app
+#     protocol: TCP
+#   - port: 8400
+#     name: cp1
+#     protocol: TCP
+#   - port: 8500
+#     name: cp2
+#     protocol: TCP
+#   - port: 53
+#     name: tcp
+#     protocol: TCP
+#   - port: 53
+#     name: udp
+#     protocol: UDP
+#   selector:
+#     app: falcon-api
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name : falcon-app
+spec:
+  ports:
+  - port: 8080
+    # targetPort: 8081
+    name: app
+    protocol: TCP
+  selector:
+    app: falcon-app
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: falcon-api-hello
+  namespace: default
+spec:
+  containers:
+  - image: centos
+    command:
+      - /bin/bash
+      - -c 
+      - |
+        yum -y install bind-utils &> /dev/null
+        for ((c=0; c < 100; c++)); do
+           nslookup falcon-app
+           echo $(date +%Y.%m.%d.%H.%M.%S) $(curl --silent falcon-app:8080); 
+           c=$((c+1));
+           sleep 5;
+        done
+    imagePullPolicy: IfNotPresent
+    name: falcon-api-hello
+  restartPolicy: Always
+
+# local variables:
+# comment-start: "# "
+# mode: yaml
+# end:

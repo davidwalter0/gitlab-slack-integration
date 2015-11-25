@@ -61,13 +61,27 @@ spec:
           # connections are slower.
           GSSAPIAuthentication    no
           EOF
-          chmod -R 700 ${HOME}/{.private,.ssh} ;
+
+          chmod 700 ${HOME}/{.private,.ssh} ;
+          chmod 600 ${HOME}/{.private,.ssh}/* ;
+
           mpath=/var/lib/mirror
-          cp ${HOME}/.private/mirror /bin/mirror
-          cp ${HOME}/.private/repolist ${mpath}/repo.list
+          mkdir -p ${mpath}/.private
+          chmod 700 ${mpath}/.private
+
+          cp ${HOME}/.private/mirror     /bin/mirror
           chmod +x /bin/mirror
+
+          cp ${HOME}/.private/repolist   ${mpath}/repo.list
+          cp ${HOME}/.private/kubeconfig ${mpath}/.private/
+
           nohup /usr/sbin/sshd -D &
-          /bin/mirror --gitlab-user=davidwalter0 --gitlab-host=k8s-node-02 --repo-list=${mpath}/repo.list --delay=60 --mirror-path=${mpath} | tee ${mpath}/mirror.log
+
+          /bin/mirror --gitlab-user={gitlab-user} \
+                      --gitlab-host={gitlab-host} \
+                      --repo-list=${mpath}/repo.list \
+                      --delay=60 --mirror-path=${mpath} | tee ${mpath}/mirror.log
+
           echo keeping open for debug one period per 60s
           while : ; do printf .; sleep 60; done
 
@@ -114,6 +128,7 @@ data:
   authorized-keys: 
   mirror: 
   repolist: 
+  kubeconfig: 
 
 # local variables:
 # comment-start: "# "

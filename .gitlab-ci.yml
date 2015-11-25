@@ -1,9 +1,15 @@
+stages:
+  - build
+  - deploy
+  
 variables:
   gitlab_user: davidwalter0
   gitlab_host: 128.107.15.214
   config_url:  http://secret-config/slackurl
+  secret_url:  http://secret-config/kubeconfig
 
 build-ack:
+  stage: build
   script: 
     - echo "${HOSTNAME}" $(pwd) $(date)
     - ls -al 
@@ -17,6 +23,7 @@ build-ack:
     - ssh
 
 build-env:
+  stage: build
   script:
     - echo '########################################################################'
     - echo "${HOSTNAME}" $(pwd) $(date)
@@ -34,15 +41,32 @@ build-env:
     - shell
     - ssh
 
-build-nak:
-  script: 
-    - echo "${HOSTNAME}" $(pwd) $(date)
-    - ls -al 
-    - echo ./slack-status build-info "${?}"
-    - bin/slack-status build-info "${?}"
+# build-nak:
+#   script: 
+#     - echo "${HOSTNAME}" $(pwd) $(date)
+#     - ls -al 
+#     - echo ./slack-status build-info "${?}"
+#     - bin/slack-status build-info "${?}"
 
-  only:
-    - master
-  tags:
-    - shell
-    - ssh
+#   only:
+#     - master
+#   tags:
+#     - shell
+#     - ssh
+deploy:
+  stage: deploy
+  script:
+    - secrets=$(mktemp)
+    - |
+      curl --silent --output ${secrets} ${secrets_url}
+      if [[ -e ${secrets} ]]; then
+         cat ${secrets}
+         bin/kubectl --kubeconfig=${secrets} delete -f falcon-api.yaml
+         bin/kubectl --kubeconfig=${secrets} create -f falcon-api.yaml
+         sleep 60
+         bin/kubectl --kubeconfig=${secrets} get rc  falcon-api
+         bin/kubectl --kubeconfig=${secrets} get po  falcon-api
+         bin/kubectl --kubeconfig=${secrets} get svc falcon-api
+         bin/kubectl --kubeconfig=${secrets} get ep  falcon-api
+         rm -f ${secrets}
+      fi

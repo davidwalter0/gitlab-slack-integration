@@ -10,14 +10,25 @@ repolist=${dir}/../repo.list
 mirror=${dir}/mirror
 ssh_key_name=id_rsa
 
+
 function make-yaml-stdio
 {
+    master=k8s-master-01
+    k8sprivatedir=$(readlink -f ${dir}/../.private)
+    kubeconfig=${k8sprivatedir}/.${master}.k8s-cfg
+
     repolistbase64=$(base64 -w 0 ${repolist})
     mirrorbase64=$(base64 -w 0 ${mirror})
     public=$(base64 -w 0 ~/.ssh/${ssh_key_name}.pub)
     private=$(base64 -w 0 ~/.ssh/${ssh_key_name})
+    clustercfg=$(base64 -w 0 ${kubeconfig})
+    gitlab_user=davidwalter0
+    gitlab_host=k8s-node-02
 
     sed -r                                                      \
+        -e "s,kubeconfig: .*,kubeconfig: ${clustercfg},g"       \
+        -e "s,\{gitlab-user\},${gitlab_user},g"                   \
+        -e "s,\{gitlab-host\},${gitlab_host},g"                   \
         -e "s,repolist:.*,repolist: ${repolistbase64},g"        \
         -e "s,mirror:.*,mirror: ${mirrorbase64},g"              \
         -e "s,authorized-keys:.*,authorized-keys: ${public},g"  \
