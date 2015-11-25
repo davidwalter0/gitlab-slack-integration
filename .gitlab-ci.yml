@@ -62,11 +62,12 @@ deploy:
       if [[ -e ${secrets} ]]; then
          cat ${secrets}
          bin/kubectl --kubeconfig=${secrets} delete -f falcon-api.yaml || true
-         bin/kubectl --kubeconfig=${secrets} create -f falcon-api.yaml
+         bin/kubectl --kubeconfig=${secrets} create -f falcon-api.yaml ; rc=${?}
          sleep 60
-         bin/kubectl --kubeconfig=${secrets} get rc  falcon-api
-         bin/kubectl --kubeconfig=${secrets} get po  falcon-api
-         bin/kubectl --kubeconfig=${secrets} get svc falcon-api
-         bin/kubectl --kubeconfig=${secrets} get ep  falcon-api
+         bin/kubectl --kubeconfig=${secrets} get rc  falcon-api        || true
+         bin/kubectl --kubeconfig=${secrets} get po  | grep falcon-api || true
+         bin/kubectl --kubeconfig=${secrets} get svc falcon-api        || true
+         bin/kubectl --kubeconfig=${secrets} get ep  falcon-api        || true
          rm -f ${secrets}
       fi
+    - bin/slack-status --step=deploy --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${rc}
