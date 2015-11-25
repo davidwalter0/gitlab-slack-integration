@@ -58,13 +58,17 @@ deploy:
   stage: deploy
   script:
     - secrets=$(mktemp)
-    - yaml=$(mktemp)
+    - yaml=$(mktemp XXXXXX.yaml)
     - |
+      echo yaml=${yaml}
+      echo secrets=${secrets}
       curl --silent --output ${secrets} ${secret_url}
       curl --silent --output ${yaml} ${deploy_yaml}
       if [[ -e ${secrets} ]]; then
          cat ${secrets}
+         echo bin/kubectl --kubeconfig=${secrets} delete -f ${yaml}
          bin/kubectl --kubeconfig=${secrets} delete -f ${yaml} || true
+         echo bin/kubectl --kubeconfig=${secrets} create -f ${yaml}
          bin/kubectl --kubeconfig=${secrets} create -f ${yaml} ; rc=${?}
          sleep 60
          bin/kubectl --kubeconfig=${secrets} get rc  falcon-api        || true
