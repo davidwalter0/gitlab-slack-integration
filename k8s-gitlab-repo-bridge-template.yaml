@@ -1,0 +1,121 @@
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: default
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: k8s-gitlab-repo-bridge
+  labels:
+    app: k8s-gitlab-repo-bridge
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    app: k8s-gitlab-repo-bridge
+    version: v1
+  template:
+    metadata:
+      labels:
+        app: k8s-gitlab-repo-bridge
+        version: v1
+    spec:
+      containers:
+      - name: k8s-gitlab-repo-bridge
+        image: k8s-bldr
+        imagePullPolicy: IfNotPresent
+        command: 
+        - /bin/bash
+        args:
+        - -c
+        - |
+          mkdir -p ${HOME}/.ssh
+          while [[ ! -e ${HOME}/.private/authorized-keys ]]; do
+              sleep 1;
+          done;
+          pushd ${HOME}/.private/
+          chmod 600 *;
+          pushd ${HOME}/.ssh/
+
+          for file in ${HOME}/.private/*; do
+              name=${file//-/_}
+              ln -sf ${file} ${name##*/}
+          done;
+
+          cat > ${HOME}/.ssh/config <<EOF
+          UserKnownHostsFile      /dev/null
+          StrictHostKeyChecking   no
+          LogLevel                quiet
+          # LogLevel              verbose
+          VerifyHostKeyDNS        no
+          ForwardX11Trusted       yes
+          ForwardAgent            yes
+          ForwardX11              yes
+          ConnectTimeout          30
+          TCPKeepAlive            yes
+          ServerAliveCountMax     5
+          ControlMaster           no
+          Compression             yes
+          # if GSSAPIAuthentication is yes but hosts don't support it,
+          # connections are slower.
+          GSSAPIAuthentication    no
+          EOF
+          chmod -R 700 ${HOME}/{.private,.ssh} ;
+          mpath=/var/lib/mirror
+          cp ${HOME}/.private/mirror /bin/mirror
+          cp ${HOME}/.private/repolist ${mpath}/repo.list
+          chmod +x /bin/mirror
+          nohup /usr/sbin/sshd -D &
+          /bin/mirror --gitlab-user=davidwalter0 --gitlab-host=k8s-node-02 --repo-list=${mpath}/repo.list --delay=60 --mirror-path=${mpath} | tee ${mpath}/mirror.log
+          echo keeping open for debug one period per 60s
+          while : ; do printf .; sleep 60; done
+
+        ports:
+        - containerPort: 22
+          name: ssh
+        volumeMounts:
+        - mountPath: /root/.private
+          name: secrets
+        - mountPath: /var/lib/mirror
+          name: mirror
+      volumes:
+      - name: secrets
+        secret:
+          secretName: k8s-gitlab-repo-bridge-secret
+      - name: mirror
+        hostPath:
+          path: /var/lib/k8s-gitlab-repo-bridge
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: k8s-gitlab-repo-bridge
+  labels:
+    app: k8s-gitlab-repo-bridge
+spec:
+  selector:
+    app: k8s-gitlab-repo-bridge
+  ports:
+  - port: 22
+    name: ssh
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: default
+  name: k8s-gitlab-repo-bridge-secret
+data:
+  id-: 
+  id-.pub: 
+  authorized-keys: 
+  mirror: 
+  repolist: 
+
+# local variables:
+# comment-start: "# "
+# mode: yaml
+# end:

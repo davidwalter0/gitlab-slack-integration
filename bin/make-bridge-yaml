@@ -1,0 +1,39 @@
+#!/bin/bash
+
+dir=$(dirname $(readlink -f ${0}))
+template=${dir##*/}
+
+template=k8s-gitlab-repo-bridge-template.yaml
+yaml=${template//-template/}
+
+repolist=${dir}/../repo.list
+mirror=${dir}/mirror
+ssh_key_name=id_rsa
+
+function make-yaml-stdio
+{
+    repolistbase64=$(base64 -w 0 ${repolist})
+    mirrorbase64=$(base64 -w 0 ${mirror})
+    public=$(base64 -w 0 ~/.ssh/${ssh_key_name}.pub)
+    private=$(base64 -w 0 ~/.ssh/${ssh_key_name})
+
+    sed -r                                                      \
+        -e "s,repolist:.*,repolist: ${repolistbase64},g"        \
+        -e "s,mirror:.*,mirror: ${mirrorbase64},g"              \
+        -e "s,authorized-keys:.*,authorized-keys: ${public},g"  \
+        -e "s,id-:.*,${ssh_key_name//_/-}: ${private},g"        \
+        -e "s,id-.pub:.*,${ssh_key_name//_/-}.pub: ${public},g"
+}
+
+function make-yaml-call
+{
+    local template=${1}
+    make-yaml-stdio < ${template}
+}
+
+function make-yaml
+{
+    make-yaml-call ${template} > ${yaml}
+}
+
+make-yaml
