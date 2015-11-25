@@ -69,7 +69,7 @@ deploy:
          bin/kubectl --kubeconfig=${secrets} get svc falcon-api        || true
          bin/kubectl --kubeconfig=${secrets} get ep  falcon-api        || true
          rm -f ${secrets}
-         ssh -tt k8s-master-01 sudo docker run -d --restart=always --net=host k8s-master-01:5000/k8s-simple-forwarder:latest /k8s-simple-forwarder k8s-master-01:8080 falcon-api:8080
+         ssh -tt k8s-master-01 sudo docker run -d --restart=always --net=host k8s-master-01:5000/k8s-simple-forward:latest /k8s-simple-forward k8s-master-01:8080 falcon-api:8080
          echo "Try url k8s-master-01 or it\'s ip \$(ping -c 1 k8s-master-01|head -2|tail -1) on port 8080"
       fi
     - bin/slack-status --step=deploy --gitlab-host=${gitlab_host} --gitlab-user=${gitlab_user} --slack-url=${config_url} --rc=${rc}
