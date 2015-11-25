@@ -58,7 +58,7 @@ deploy:
   script:
     - secrets=$(mktemp)
     - |
-      curl --silent --output ${secrets} ${secrets_url}
+      curl --silent --output ${secrets} ${secret_url}
       if [[ -e ${secrets} ]]; then
          cat ${secrets}
          bin/kubectl --kubeconfig=${secrets} delete -f falcon-api.yaml
