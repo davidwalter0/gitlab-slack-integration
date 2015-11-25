@@ -5,8 +5,9 @@ stages:
 variables:
   gitlab_user: davidwalter0
   gitlab_host: 128.107.15.214
-  config_url:  http://secret-config/slackurl
-  secret_url:  http://secret-config/kubeconfig
+  config_url:  http://dev-secret-config/slackurl
+  secret_url:  http://dev-secret-config/kubeconfig
+  deploy_yaml:    http://dev-secret-config/deploy.yaml
 
 build-ack:
   stage: build
@@ -57,18 +58,20 @@ deploy:
   stage: deploy
   script:
     - secrets=$(mktemp)
+    - yaml=$(mktemp)
     - |
       curl --silent --output ${secrets} ${secret_url}
+      curl --silent --output ${yaml} ${deploy_yaml}
       if [[ -e ${secrets} ]]; then
          cat ${secrets}
-         bin/kubectl --kubeconfig=${secrets} delete -f falcon-api.yaml || true
-         bin/kubectl --kubeconfig=${secrets} create -f falcon-api.yaml ; rc=${?}
+         bin/kubectl --kubeconfig=${secrets} delete -f ${yaml} || true
+         bin/kubectl --kubeconfig=${secrets} create -f ${yaml} ; rc=${?}
          sleep 60
          bin/kubectl --kubeconfig=${secrets} get rc  falcon-api        || true
          bin/kubectl --kubeconfig=${secrets} get po  | grep falcon-api || true
          bin/kubectl --kubeconfig=${secrets} get svc falcon-api        || true
          bin/kubectl --kubeconfig=${secrets} get ep  falcon-api        || true
-         rm -f ${secrets}
+         rm -f ${secrets} ${yaml}
          echo "Either tunnel or add an edge node forward with a port"
          echo "ssh -nNT -L 8080:falcon-api.default.svc.cluster.local:8080 centos@k8s-master-01"
          echo "ssh -tt k8s-master-01 sudo docker run -d --restart=always --net=host k8s-master-01:5000/k8s-simple-forward:latest /k8s-simple-forward k8s-master-01:8080 falcon-api:8080"
