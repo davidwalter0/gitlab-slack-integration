@@ -61,7 +61,7 @@ deploy:
       curl --silent --output ${secrets} ${secret_url}
       if [[ -e ${secrets} ]]; then
          cat ${secrets}
-         bin/kubectl --kubeconfig=${secrets} delete -f falcon-api.yaml
+         bin/kubectl --kubeconfig=${secrets} delete -f falcon-api.yaml || true
          bin/kubectl --kubeconfig=${secrets} create -f falcon-api.yaml
          sleep 60
          bin/kubectl --kubeconfig=${secrets} get rc  falcon-api
