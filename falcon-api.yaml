@@ -1,3 +1,4 @@
+# k8s-master-01:5000/falcon-api
 ---
 apiVersion: v1
 kind: ReplicationController
@@ -20,7 +21,7 @@ spec:
       # falcon-api
       - name: falcon-api
         privileged: true
-        image: falcon-api
+        image: k8s-master-01:5000/falcon-api:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -28,7 +29,7 @@ spec:
       # falcon-consul
       - name: falcon-consul
         privileged: true
-        image: falcon-consul
+        image: k8s-master-01:5000/falcon-consul:latest
         command:
           - /bin/consul
         args:
@@ -72,7 +73,7 @@ spec:
       # falcon-mariadb
       - name: falcon-mariadb
         privileged: true
-        image: falcon-mariadb
+        image: k8s-master-01:5000/falcon-mariadb:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3306
@@ -80,7 +81,7 @@ spec:
       # falcon-vault
       - name: falcon-vault
         privileged: true
-        image: falcon-vault
+        image: k8s-master-01:5000/falcon-vault:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8200
@@ -106,7 +107,7 @@ spec:
       containers:
       - name: falcon-app
         privileged: true
-        image: falcon-app
+        image: k8s-master-01:5000/falcon-app:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
